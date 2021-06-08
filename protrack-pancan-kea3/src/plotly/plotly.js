@@ -14,13 +14,7 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, sh
   topTracks.y.splice(0,0,'--')
 
   const bottomTracks = generateTrackGroup(bottom, samples)
-  //
-  // const ssGSEA = generateTrackGroup(tracks, 'score', 'ssGSEA', samples)
-  // ssGSEA.showscale = true
-  // //separate ssGSEA from IPAS
-  // ssGSEA.z.splice(0,0,[])
-  // ssGSEA.y.splice(0,0,'--')
-  //
+
   // const IPAS = generateTrackGroup(tracks, 'score', 'IPAS', samples)
   let data = []
 

@@ -8,6 +8,8 @@
 <script>
   import generateHeatmap from '../plotly/plotly'
 
+  import categoricalColors from '../plotly/colors/categoricalColors'
+
   let plot
 
   export default {
@@ -29,11 +31,26 @@
     watch: {
       clinicalTracks() {
         this.renderHeatmap()
-      }
+      },
+      samples() {
+        this.renderHeatmap()
+      },
     },
     methods: {
       renderHeatmap() {
         plot = generateHeatmap(this.clinicalTracks, this.samples, this.top, this.bottom)
+
+        plot.on('plotly_click', (data) => {
+            const selectedSeries = data.points[0].y;
+            const selectedSample = data.points[0].x;
+            const selectedValue = selectedSeries in categoricalColors ?
+              categoricalColors[selectedSeries][data.points[0].z].label
+              : data.points[0].z;
+            this.$store.dispatch(
+                'updateSelectedData',
+                { selectedSeries, selectedSample, selectedValue }
+            )
+        });
       }
     },
     mounted() {

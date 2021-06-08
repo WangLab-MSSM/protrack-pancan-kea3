@@ -32,6 +32,7 @@
             this.$store.dispatch('setKinases', kinases)
             this.$store.dispatch('submitKinases', { kinases, direction: 'Bottom' })
             this.$store.dispatch('submitKinases', { kinases, direction: 'Top' })
+            this.$store.dispatch('updateActiveTab', 1)
         }
     },
     mounted() {

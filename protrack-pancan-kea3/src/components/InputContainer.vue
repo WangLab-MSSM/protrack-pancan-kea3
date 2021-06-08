@@ -7,8 +7,7 @@
             </b-tab-item>
 
             <b-tab-item label="2) Customize/download">
-                <!--<tab3-customize-and-download />-->
-                2
+                <tab2-customize-and-download />
             </b-tab-item>
         </b-tabs>
     </section>
@@ -16,17 +15,13 @@
 </template>
 
 <script>
-    // import Tab2RenderHeatmap from "./Tab2_RenderHeatmap";
-    // import Tab3CustomizeAndDownload from "./Tab3_CustomizeAndDownload";
-
     import Tab1SelectKinases from "./Tab1_SelectKinases";
+    import Tab2CustomizeAndDownload from "./Tab2_CustomizeAndDownload";
 
     export default {
         components: {
+          Tab2CustomizeAndDownload,
           Tab1SelectKinases
-          // Tab3CustomizeAndDownload,
-          // Tab2RenderHeatmap,
-          // Tab1SelectPathways
         },
         name: "input-container",
         computed: {
