@@ -35,10 +35,16 @@
       samples() {
         this.renderHeatmap()
       },
+      bottom() {
+        this.renderHeatmap()
+      },
+      top() {
+        this.renderHeatmap()
+      },
     },
     methods: {
       renderHeatmap() {
-        plot = generateHeatmap(this.clinicalTracks, this.samples, this.top, this.bottom)
+        plot = generateHeatmap(this.clinicalTracks, this.samples.slice(), this.top.slice(), this.bottom.slice())
 
         plot.on('plotly_click', (data) => {
             const selectedSeries = data.points[0].y;
@@ -51,6 +57,8 @@
                 { selectedSeries, selectedSample, selectedValue }
             )
         });
+
+
       }
     },
     mounted() {

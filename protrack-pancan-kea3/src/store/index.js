@@ -6,14 +6,16 @@ Vue.use(Vuex)
 import getSortedKeys from '../getSortedKeys'
 import { getTracks, getClinicalTracks } from '../firebase'
 import samples from '../samples'
+import categoricalColors from '../plotly/colors/categoricalColors'
 
 export default new Vuex.Store({
   state: {
     activeTab: 0,
     clinicalTracks: {},
+    filters: {},
     kinases: [],
     Bottom: [],
-    sampleMeta: {},
+    sampleMeta: [],
     samples: samples,
     selectedSample: '',
     selectedSeries: '',
@@ -23,6 +25,16 @@ export default new Vuex.Store({
     tumorsLocked: true,
   },
   mutations: {
+    FILTER_SAMPLES_CATEGORICAL(state, {key, show}) {
+      let filteredSamples = []
+      state.sampleMeta.forEach(([sample, sampleData]) => {
+        if (show.includes(sampleData[key])) {
+          filteredSamples.push(sample)
+        }
+      })
+      const res = samples.filter(el => filteredSamples.includes(el))
+      state.samples = res
+    },
     SET_KINASE_LIST(state, kinases) {
       state.kinases = kinases
     },
@@ -35,6 +47,14 @@ export default new Vuex.Store({
         clinical: true
       })
       state.tracksMeta = {...state.tracksMeta, ...clinicalTracksMeta}
+    },
+    SET_FILTERS(state) {
+      let res = {}
+      for (const category in categoricalColors) {
+        res[category] = Object.values(categoricalColors[category]).map(e => e.label);
+        res[category].push("NA")
+      }
+      state.filters = {...res}
     },
     SET_SAMPLE_META(state, clinicalTracks) {
       let sampleMeta = []
@@ -71,6 +91,11 @@ export default new Vuex.Store({
       state.selectedSample = selectedSample;
       state.selectedValue = selectedValue;
     },
+    UPDATE_FILTERS(state, {key, show}) {
+      let oldObj = {...state.filters}
+      oldObj[key] = show
+      state.filters = oldObj
+    },
     UPDATE_SAMPLES(state, sortedSamples) {
       state.samples = sortedSamples
     },
@@ -84,7 +109,14 @@ export default new Vuex.Store({
       store.commit('SET_CLINICAL_TRACKS', clinicalTracks)
       store.commit('SET_CLINICAL_TRACKS_META', clinicalTracks)
       store.commit('SET_SAMPLE_META', clinicalTracks)
-      // store.commit('SET_FILTERS', clinicalTracks)
+      store.commit('SET_FILTERS', clinicalTracks)
+    },
+    filterCategorical(store, {key, show}) {
+      store.commit('FILTER_SAMPLES_CATEGORICAL', {
+        key,
+        show
+      })
+      store.commit('UPDATE_FILTERS', {key, show})
     },
     updateActiveTab(store, v) {
       store.commit('UPDATE_ACTIVE_TAB', v)
@@ -93,7 +125,6 @@ export default new Vuex.Store({
       store.commit('SET_KINASE_LIST', kinases)
     },
     sortBySeries(store, { series , asc }) {
-      console.log(series)
       let scores = {}
       if (store.state.tracksMeta[series].clinical) {
         Object.entries(store.state.clinicalTracks[series]).forEach(el => scores[el[0]] = typeof el[1].colorKey === 'number' ? el[1].colorKey : -1000)
@@ -103,7 +134,6 @@ export default new Vuex.Store({
       }
       let tumorVals = {}
       Object.entries(store.state.clinicalTracks.Tumor).forEach(el => tumorVals[el[0]] = el[1].colorKey)
-      console.log('tumor vals: ', tumorVals)
       const sortedSamples = getSortedKeys(
         scores,
         tumorVals,

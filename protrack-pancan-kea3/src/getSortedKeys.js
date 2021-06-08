@@ -1,8 +1,4 @@
 export default function getSortedKeys(seriesData, tumor, filteredSamples, asc=true, tumorsLocked=true) {
-
-  // const seriesDataHack = {}
-  // Object.entries(seriesData).el
-
   if (asc) {
     if (tumorsLocked) {
         return filteredSamples.sort(

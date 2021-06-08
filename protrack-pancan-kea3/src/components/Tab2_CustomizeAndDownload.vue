@@ -11,15 +11,33 @@
                 </b-switch>
             </b-field>
         </div>
+        <toggle-categorical
+               v-for="(colors, category) in categoricalColors"
+                :key="category"
+                :options="colors"
+                :category="category"
+        >
+
+        </toggle-categorical>
     </div>
 </template>
 
 <script>
   import SortButtons from "./SortButtons";
 
+  import categoricalColors from '../plotly/colors/categoricalColors'
+  import ToggleCategorical from "./ToggleCategorical";
+
   export default {
-    components: {SortButtons},
+    components: {
+      ToggleCategorical,
+      SortButtons},
     name: "tab2-customize-and-download",
+    data() {
+      return {
+          categoricalColors,
+      }
+    },
     computed: {
         selectedSeries() {
             return this.$store.state.selectedSeries;

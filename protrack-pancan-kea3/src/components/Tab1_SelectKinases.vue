@@ -11,7 +11,7 @@
             size="is-small"
             rounded type="is-primary"
             :disabled="kinaseInput.length === 0"
-            @click="submitKinases"
+            @click="submitAndMoveTabs"
         >
             Visualize
         </b-button>
@@ -26,17 +26,25 @@
             kinaseInput: 'AAK1\nAATK\nABL1',
         }
     },
+    computed: {
+      kinases() {
+        return this.$store.state.kinases
+      }
+    },
     methods: {
-        submitKinases() {
+        submitAndMoveTabs() {
+            this.fetchTracks()
+            this.$store.dispatch('updateActiveTab', 1)
+        },
+        fetchTracks() {
             const kinases = this.kinaseInput.split('\n').map(e => e.toUpperCase())
             this.$store.dispatch('setKinases', kinases)
-            this.$store.dispatch('submitKinases', { kinases, direction: 'Bottom' })
-            this.$store.dispatch('submitKinases', { kinases, direction: 'Top' })
-            this.$store.dispatch('updateActiveTab', 1)
+            this.$store.dispatch('submitKinases', { kinases: this.kinases, direction: 'Bottom' })
+            this.$store.dispatch('submitKinases', { kinases: this.kinases, direction: 'Top' })
         }
     },
     mounted() {
-        this.submitKinases()
+        this.fetchTracks()
     }
 }
 </script>
