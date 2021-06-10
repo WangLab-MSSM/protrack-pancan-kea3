@@ -5,8 +5,8 @@ export default {
         [1.0, '#00429d']
       ],
       colorbar: {
-        title: '<b>Overall survival<br>(days)</b>',
-          x: 1.2,
+        title: '<b>Overall<br>survival<br>(days)</b>',
+          x: 1.17,
           thickness: 10,
           len: 0.5,
           y: 0.7
@@ -21,7 +21,7 @@ export default {
       ],
       colorbar: {
         title: '<b>ESTIMATE<br>purity</b>',
-          x: 1.1,
+          x: 1.09,
           thickness: 10,
           len: 0.5,
           y: 0.7
