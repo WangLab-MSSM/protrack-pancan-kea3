@@ -15,10 +15,16 @@
         >
             Visualize
         </b-button>
+
+        <div v-if="notFound.length > 0" class="not-found-list">
+            <b>Not found: </b> {{ notFound.join(' , ') }}
+        </div>
     </div>
 </template>
 
 <script>
+  import availableKinases from '../kinases'
+
   export default {
     name: "tab1-select-kinases",
     data() {
@@ -29,6 +35,12 @@
     computed: {
       kinases() {
         return this.$store.state.kinases
+      },
+      found() {
+        return this.kinaseInput.split('\n').filter(e => e.length).map(e => e.toUpperCase()).filter(el => availableKinases[el])
+      },
+      notFound() {
+        return this.kinaseInput.split('\n').filter(e => e.length).map(e => e.toUpperCase()).filter(el => !(el in availableKinases))
       }
     },
     methods: {
@@ -37,10 +49,10 @@
             this.$store.dispatch('updateActiveTab', 1)
         },
         fetchTracks() {
-            const kinases = this.kinaseInput.split('\n').map(e => e.toUpperCase())
-            this.$store.dispatch('setKinases', kinases)
-            this.$store.dispatch('submitKinases', { kinases: this.kinases, direction: 'Bottom' })
-            this.$store.dispatch('submitKinases', { kinases: this.kinases, direction: 'Top' })
+            // const kinases = this.kinaseInput.split('\n').map(e => e.toUpperCase())
+            this.$store.dispatch('setKinases', this.found)
+            this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Bottom' })
+            this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Top' })
         }
     },
     mounted() {
@@ -50,5 +62,7 @@
 </script>
 
 <style scoped>
-
+.not-found-list {
+    margin: 20px 0;
+}
 </style>
