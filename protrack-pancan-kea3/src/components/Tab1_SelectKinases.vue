@@ -49,7 +49,6 @@
             this.$store.dispatch('updateActiveTab', 1)
         },
         fetchTracks() {
-            // const kinases = this.kinaseInput.split('\n').map(e => e.toUpperCase())
             this.$store.dispatch('setKinases', this.found)
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Bottom' })
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Top' })

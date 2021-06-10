@@ -46,7 +46,6 @@ export default function generateClinicalTrack(
   })
 
   const colorOptions = generateColorScale(trackName)
-
   return {
     x: [...samples],
     y: [trackName],

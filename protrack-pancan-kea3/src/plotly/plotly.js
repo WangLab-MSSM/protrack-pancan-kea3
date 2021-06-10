@@ -6,7 +6,7 @@ import generateLayout from './layout/generateLayout'
 export default function generateHeatmap(clinicalTracks, samples, top, bottom, showTop=true, showBottom=true) {
   const Plotly = window.Plotly;
   const clinical = Object.entries(clinicalTracks).map(c => generateClinicalTrack(c[0], c[1], samples))
-
+  console.log('clinical: ', clinical)
   const topTracks = generateTrackGroup(top, samples)
   topTracks.showscale = true
   //separate topTracks from bottomTracks

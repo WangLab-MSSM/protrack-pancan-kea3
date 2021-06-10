@@ -73,6 +73,8 @@ export default function generateTrackGroup(tracks, samples) {
         x: 1.02,
         thickness: 10,
         side: 'bottom',
+        len: 0.5,
+        y: 0.7
     },
     title: 'zscore'
   }

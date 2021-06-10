@@ -8,6 +8,8 @@ export default {
         title: '<b>Overall survival<br>(days)</b>',
           x: 1.2,
           thickness: 10,
+          len: 0.5,
+          y: 0.7
       },
       showscale: true,
 
@@ -21,6 +23,8 @@ export default {
         title: '<b>ESTIMATE<br>purity</b>',
           x: 1.1,
           thickness: 10,
+          len: 0.5,
+          y: 0.7
       },
       showscale: true,
       zmin: 0,
