@@ -29,7 +29,7 @@
     name: "tab1-select-kinases",
     data() {
         return {
-            kinaseInput: 'AAK1\nAATK\nABL1',
+            kinaseInput: 'MAPK1\nMAPK3\nMAP2K1\nMAP2K3\nEGFR',
         }
     },
     computed: {
