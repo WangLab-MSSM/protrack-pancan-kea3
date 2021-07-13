@@ -19,10 +19,11 @@ firebase.initializeApp(firebaseConfig)
 export const getTracks = async (kinase, direction) => {
     const path = `KEA3/${direction}/${kinase}`
     const ref = firebase.database().ref(path)
+    const trackAbbrev = direction === 'Foldchange' ? 'FC' : direction[0]
     return await ref.once('value')
         .then((snapshot) => {
             return {
-                name: `${kinase} ${direction[0]}`,
+                name: `${kinase} ${trackAbbrev}`,
                 direction,
                 kinase,
                 data: snapshot.val(),

@@ -13,6 +13,7 @@ export default new Vuex.Store({
     activeTab: 0,
     clinicalTracks: {},
     filters: {},
+    Foldchange: [],
     kinases: [],
     Bottom: [],
     sampleMeta: [],
@@ -129,8 +130,13 @@ export default new Vuex.Store({
       if (store.state.tracksMeta[series].clinical) {
         Object.entries(store.state.clinicalTracks[series]).forEach(el => scores[el[0]] = typeof el[1].colorKey === 'number' ? el[1].colorKey : -1000)
       } else {
-        const direction = series[series.length - 1] === 'T' ? 'Top' : 'Bottom'
-        Object.entries(store.state[direction].filter((e) => e.name === series)[0].data).forEach(el => scores[el[0]] = typeof el[1] === 'number' ? el[1] : -1000)
+        const directionStr = series[series.length - 1]
+        const directionOpts = {
+          'T': 'Top',
+          'B': 'Bottom',
+          'C': 'Foldchange'
+        }
+        Object.entries(store.state[directionOpts[directionStr]].filter((e) => e.name === series)[0].data).forEach(el => scores[el[0]] = typeof el[1] === 'number' ? el[1] : -1000)
       }
       let tumorVals = {}
       Object.entries(store.state.clinicalTracks.Tumor).forEach(el => tumorVals[el[0]] = el[1].colorKey)

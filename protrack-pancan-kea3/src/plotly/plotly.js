@@ -3,10 +3,9 @@ import generateTrackGroup from './generateTrackGroup'
 import generateLayout from './layout/generateLayout'
 
 
-export default function generateHeatmap(clinicalTracks, samples, top, bottom, showTop=true, showBottom=true) {
+export default function generateHeatmap(clinicalTracks, samples, top, bottom, foldchange) {
   const Plotly = window.Plotly;
   const clinical = Object.entries(clinicalTracks).map(c => generateClinicalTrack(c[0], c[1], samples))
-  console.log('clinical: ', clinical)
   const topTracks = generateTrackGroup(top, samples)
   topTracks.showscale = true
   //separate topTracks from bottomTracks
@@ -14,6 +13,10 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, sh
   topTracks.y.splice(0,0,'--')
 
   const bottomTracks = generateTrackGroup(bottom, samples)
+  bottomTracks.z.splice(0,0,[])
+  bottomTracks.y.splice(0,0,'---')
+
+  const foldChangeTracks = generateTrackGroup(foldchange, samples, true)
   //
   // const ssGSEA = generateTrackGroup(tracks, 'score', 'ssGSEA', samples)
   // ssGSEA.showscale = true
@@ -23,14 +26,9 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, sh
   //
   // const IPAS = generateTrackGroup(tracks, 'score', 'IPAS', samples)
   let data = []
-
-  if (showBottom) {
-    data.push(bottomTracks)
-  }
-
-  if (showTop) {
-    data.push(topTracks)
-  }
+  data.push(foldChangeTracks)
+  data.push(bottomTracks)
+  data.push(topTracks)
 
   data = [...data, ...clinical]
 
@@ -39,7 +37,8 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, sh
   const fillerArr = new Array(samples.length).fill(0)
   data.splice(i-clinical.length,0,{
       x: samples,
-      y: !showTop && showBottom ? ['--'] : ['-'],
+      // y: !showTop && showBottom ? ['--'] : ['-'],
+      y: ['-'],
       z: [fillerArr],
       type: 'heatmap',
       showscale: false,
@@ -63,7 +62,7 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, sh
         }
   })
 
-  const layout = generateLayout(data, samples, showTop, showBottom)
+  const layout = generateLayout(data, samples)
 
   Plotly.newPlot('plotly-heatmap', data, layout);
   return document.getElementById('plotly-heatmap')

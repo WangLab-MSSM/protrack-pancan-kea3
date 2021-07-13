@@ -26,7 +26,10 @@
       },
       bottom() {
         return this.$store.state.Bottom
-      }
+      },
+      foldchange() {
+        return this.$store.state.Foldchange
+      },
     },
     watch: {
       clinicalTracks() {
@@ -41,10 +44,19 @@
       top() {
         this.renderHeatmap()
       },
+      foldchange() {
+        this.renderHeatmap()
+      }
     },
     methods: {
       renderHeatmap() {
-        plot = generateHeatmap(this.clinicalTracks, this.samples.slice(), this.top.slice(), this.bottom.slice())
+        plot = generateHeatmap(
+          this.clinicalTracks,
+          this.samples.slice(),
+          this.top.slice(),
+          this.bottom.slice(),
+          this.foldchange.slice(),
+        )
 
         plot.on('plotly_click', (data) => {
             const selectedSeries = data.points[0].y;

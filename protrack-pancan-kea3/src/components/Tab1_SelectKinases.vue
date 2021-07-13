@@ -52,6 +52,7 @@
             this.$store.dispatch('setKinases', this.found)
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Bottom' })
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Top' })
+            this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Foldchange' })
         }
     },
     mounted() {

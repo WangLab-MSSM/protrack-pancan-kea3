@@ -47,10 +47,45 @@ Plotly trace group object (group of tracks)
 }
  */
 
-export default function generateTrackGroup(tracks, samples) {
+export default function generateTrackGroup(tracks, samples, fc=false) {
   // const tracks = trackObj.filter(el => el[filterKey] === filterVal)
   tracks.sort((a, b) => a.name - b.name)
+  let colorbar, colorscale, zmax, zmin, showscale, autocolorscale;
 
+  if (fc) {
+    zmax = 3
+    zmin = -3
+    colorscale =  [
+      [0.0, '#0059fe'],
+      [1.0, '#e00b2d']
+    ]
+    colorbar = {
+        title: '<b>fc</b>',
+        x: 1.1,
+        thickness: 10,
+        len: 0.5,
+        y: 0.7
+    }
+    showscale = true
+    autocolorscale = true
+  } else {
+    showscale = true
+    zmax = 3
+    zmin = -3
+    colorscale =  [
+      [0.0, '#002CFE'],
+      [1.0, '#FFFF00']
+    ]
+    colorbar = {
+        title: '<b>-zscore</b>',
+        x: 1.02,
+        thickness: 10,
+        side: 'bottom',
+        len: 0.5,
+        y: 0.7
+    }
+    autocolorscale = false
+  }
   return {
     x: [...samples],
     y: tracks.map(el => el.name),
@@ -58,24 +93,14 @@ export default function generateTrackGroup(tracks, samples) {
       return samples.map(sample => el.data[sample])
     }),
     type: 'heatmap',
-    colorscale: [
-      [0.0, '#002CFE'],
-      [1.0, '#FFFF00']
-    ],
-    showscale: false,
+    colorscale,
     connectgaps: false,
     hoverongaps: false,
-    autocolorscale: false,
-    zmin:-3,
-    zmax:3,
-    colorbar: {
-      title: '<b>zscore</b>',
-        x: 1.02,
-        thickness: 10,
-        side: 'bottom',
-        len: 0.5,
-        y: 0.7
-    },
-    title: 'zscore'
+    autocolorscale,
+    zmin,
+    zmax,
+    colorbar,
+    showscale
+    // title: 'zscore'
   }
 }

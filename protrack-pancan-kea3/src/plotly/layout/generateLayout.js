@@ -2,7 +2,7 @@ import annotations from './annotations'
 import xAxis from './xAxis'
 import yAxis from './yAxis'
 
-export default function generateLayout(data, samples, showTop, showBottom) {
+export default function generateLayout(data, samples) {
   const yAxisLabels = data.map(el => el.y).flat()
   return {
             xaxis: xAxis(),
@@ -25,6 +25,6 @@ export default function generateLayout(data, samples, showTop, showBottom) {
                 borderwidth: 2,
                 "orientation": "h",
             },
-            annotations: samples.length ? annotations(samples, showTop, showBottom) : []
+            annotations: samples.length ? annotations(samples) : []
         };
 }

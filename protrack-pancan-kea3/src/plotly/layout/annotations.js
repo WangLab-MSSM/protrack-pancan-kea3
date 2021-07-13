@@ -1,4 +1,4 @@
-export default function annotations(samples, showTop, showBottom) {
+export default function annotations(samples) {
   const middleSample = samples[Math.floor(samples.length/2)]
   const layoutOptions = {
       font: {
@@ -12,19 +12,25 @@ export default function annotations(samples, showTop, showBottom) {
       x: middleSample,
   }
   let res = []
-  if (showTop) {
+  // if (showTop) {
     res.push(    {
       y: '-',
-      text: "<b>Top</b>",
+      text: "<b>KEA3 Score - Top</b>",
       ...layoutOptions,
     },)
-  }
-  if (showBottom) {
+  // }
+  // if (showBottom) {
     res.push({
       y: '--',
-      text: "<b>Bottom</b>",
+      text: "<b>KEA3 Score - Bottom</b>",
       ...layoutOptions,
     },)
-  }
+
+      res.push(    {
+      y: '---',
+      text: "<b>Global protein abundance foldchange</b>",
+      ...layoutOptions,
+    },)
+  // }
   return res
 }
