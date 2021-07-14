@@ -105,40 +105,40 @@ export function generateTrackGroup(tracks, samples, fc=false) {
   }
 }
 
-// export function generateSubstrateTracks({ tracks, samples }) {
-//   let colorbar, colorscale, zmax, zmin, showscale, autocolorscale;
+export function generateSubstrateTracks({ tracks, samples }) {
+  let colorbar, colorscale, zmax, zmin, showscale, autocolorscale;
 
-//   zmax = 3
-//   zmin = -3
-//   colorscale =  [
-//     [0.0, '#0059fe'],
-//     [1.0, '#e00b2d']
-//   ]
-//   colorbar = {
-//       title: '<b>fc</b>',
-//       x: 1.1,
-//       thickness: 10,
-//       len: 0.5,
-//       y: 0.7
-//   }
-//   showscale = false
-//   autocolorscale = true
+  zmax = 3
+  zmin = -3
+  colorscale =  [
+    [0.0, '#0059fe'],
+    [1.0, '#e00b2d']
+  ]
+  colorbar = {
+      title: '<b>fc</b>',
+      x: 1.1,
+      thickness: 10,
+      len: 0.5,
+      y: 0.7
+  }
+  showscale = false
+  autocolorscale = true
 
-//   return {
-//     x: [...samples],
-//     y: Object.keys(tracks.data),
-//     z: Object.entries(tracks.data).map(([substrate, substrateFC]) => {
-//       return samples.map(sample => substrateFC[sample])
-//     }),
-//     type: 'heatmap',
-//     colorscale,
-//     connectgaps: false,
-//     hoverongaps: false,
-//     autocolorscale,
-//     zmin,
-//     zmax,
-//     colorbar,
-//     showscale
-//   //   // title: 'zscore'
-//   }
-// }
+  return {
+    x: [...samples],
+    y: Object.keys(tracks.data),
+    z: Object.entries(tracks.data).map(([substrate, substrateFC]) => {
+      return samples.map(sample => substrateFC[sample])
+    }),
+    type: 'heatmap',
+    colorscale,
+    connectgaps: false,
+    hoverongaps: false,
+    autocolorscale,
+    zmin,
+    zmax,
+    colorbar,
+    showscale
+  //   // title: 'zscore'
+  }
+}

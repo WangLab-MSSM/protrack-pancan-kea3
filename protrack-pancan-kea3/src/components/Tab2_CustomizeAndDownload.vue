@@ -1,5 +1,18 @@
 <template>
     <div class="tab2-customize-and-download">
+        <div class="view-selector">
+            <b-field label="View: " horizontal>
+                <b-select v-model="view">
+                    <option
+                        v-for="option in kinaseViews"
+                        :value="option"
+                        :key="option"
+                    >
+                        {{ option }}
+                    </option>
+                </b-select>
+        </b-field>
+        </div>
         <div class="heatmap-options">
             <div><b>Series: </b>{{ selectedSeries }}</div>
             <div><b>Sample: </b> {{ selectedSample }}</div>
@@ -31,7 +44,8 @@
   export default {
     components: {
       ToggleCategorical,
-      SortButtons},
+      SortButtons
+    },
     name: "tab2-customize-and-download",
     data() {
       return {
@@ -39,6 +53,13 @@
       }
     },
     computed: {
+        view: {
+            get() { return this.$store.state.view },
+            set(v) { this.$store.dispatch('setView', v)}
+        },
+        kinaseViews() {
+            return ['all kinases', ...this.$store.state.kinases]
+        },
         selectedSeries() {
             return this.$store.state.selectedSeries;
         },
@@ -71,6 +92,12 @@
     }
 
     .score-selector {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+    }
+
+    .view-selector {
         display: flex;
         flex-direction: row;
         justify-content: left;

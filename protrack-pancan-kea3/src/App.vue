@@ -4,23 +4,33 @@
   <introduction />
     <main class="main">
       <input-container class="input-container-main" />
-      <heatmap-container />
+      <heatmap-container v-if="view === 'all kinases'" />
+      <heatmap-container-substrate v-else ></heatmap-container-substrate>
     </main>
   </div>
 </template>
 
 <script>
-
 import Introduction from "./components/Introduction";
 import InputContainer from "./components/InputContainer";
 import HeatmapContainer from "./components/HeatmapContainer";
+import HeatmapContainerSubstrate from './components/HeatmapContainerSubstrate.vue';
 
 export default {
   name: 'App',
   components: {
     HeatmapContainer,
     InputContainer,
-    Introduction
+    Introduction,
+    HeatmapContainerSubstrate,
+  },
+  computed: {
+    view() {
+      return this.$store.state.view
+    },
+    activeTab() {
+      return this.$store.state.activeTab
+    }
   },
   mounted() {
     this.$store.dispatch('fetchClinicalTracks')

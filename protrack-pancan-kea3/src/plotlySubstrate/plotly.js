@@ -3,12 +3,11 @@ import { generateSubstrateTracks, generateTrackGroup } from './generateTrackGrou
 import generateLayout from './layout/generateLayout'
 
 
-export default function generateHeatmap(clinicalTracks, samples, top, bottom, foldchange) {
+export default function generateHeatmap({ top, bottom, foldchange, samples, clinicalTracks, substrateTracks }) {
   const Plotly = window.Plotly;
   const clinical = Object.entries(clinicalTracks).map(c => generateClinicalTrack(c[0], c[1], samples))
   const topTracks = generateTrackGroup(top, samples)
   topTracks.showscale = true
-  //separate topTracks from bottomTracks
   topTracks.z.splice(0,0,[])
   topTracks.y.splice(0,0,'--')
 
@@ -17,11 +16,19 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, fo
   bottomTracks.y.splice(0,0,'---')
 
   const foldChangeTracks = generateTrackGroup(foldchange, samples, true)
+  foldChangeTracks.z.splice(0,0,[])
+  foldChangeTracks.y.splice(0,0,'----')
+
+  let substrateTracksPlotly = generateSubstrateTracks({ tracks: substrateTracks[0], samples})
+  // substrateTracksPlotly.z.splice(0,0,[])
+  // substrateTracksPlotly.y.splice(0,0,'----')
 
   let data = []
+  data.push(substrateTracksPlotly)
   data.push(foldChangeTracks)
   data.push(bottomTracks)
   data.push(topTracks)
+
 
   data = [...data, ...clinical]
 
@@ -57,6 +64,6 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, fo
 
   const layout = generateLayout(data, samples)
 
-  Plotly.newPlot('plotly-heatmap', data, layout);
-  return document.getElementById('plotly-heatmap')
+  Plotly.newPlot('plotly-heatmap-substrate', data, layout);
+  return document.getElementById('plotly-heatmap-substrate')
 }

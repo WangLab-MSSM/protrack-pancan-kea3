@@ -39,3 +39,15 @@ export const getClinicalTracks = async() => {
               return snapshot.val()
           })
 }
+
+export const getSubstrateTracks = async(kinase) => {
+    const path = `KEA3/k_kinase_v_substrateTracks/${kinase}`
+    const ref = firebase.database().ref(path)
+    return await ref.once('value')
+          .then((snapshot) => {
+              return {
+                kinase,
+                data: snapshot.val(),
+            }
+          })
+}

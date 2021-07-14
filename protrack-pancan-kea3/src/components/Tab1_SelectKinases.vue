@@ -53,6 +53,7 @@
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Bottom' })
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Top' })
             this.$store.dispatch('submitKinases', { kinases: this.found, direction: 'Foldchange' })
+            this.$store.dispatch('fetchSubstrateTracks', { kinases: this.found })
         }
     },
     mounted() {

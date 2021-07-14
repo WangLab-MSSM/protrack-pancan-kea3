@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 import getSortedKeys from '../getSortedKeys'
-import { getTracks, getClinicalTracks } from '../firebase'
+import { getTracks, getClinicalTracks, getSubstrateTracks } from '../firebase'
 import samples from '../samples'
 import categoricalColors from '../plotly/colors/categoricalColors'
 
@@ -24,6 +24,8 @@ export default new Vuex.Store({
     Top: [],
     tracksMeta: {},
     tumorsLocked: true,
+    substrateTracks: [],
+    view: 'all kinases',
   },
   mutations: {
     FILTER_SAMPLES_CATEGORICAL(state, {key, show}) {
@@ -73,6 +75,9 @@ export default new Vuex.Store({
     SET_TRACKS(state, { tracks, direction }) {
       state[direction] = tracks
     },
+    SET_SUBSTRATE_TRACKS(state, { tracks }) {
+      state.substrateTracks = tracks
+    },
     SET_TRACKS_META(state, tracks) {
       let heatmapTracksMeta = {}
       tracks.forEach(({ name, direction, kinase }) => {
@@ -103,6 +108,9 @@ export default new Vuex.Store({
     UPDATE_TUMORS_LOCKED(state, tumorsLocked) {
       state.tumorsLocked = tumorsLocked;
     },
+    SET_VIEW(state, v) {
+      state.view = v
+    }
   },
   actions: {
     async fetchClinicalTracks(store) {
@@ -157,11 +165,21 @@ export default new Vuex.Store({
       store.commit('SET_TRACKS', { tracks, direction })
       store.commit('SET_TRACKS_META', tracks)
     },
+    async fetchSubstrateTracks(store, { kinases }) {
+      const trackPromises = [...kinases].map((kinase) => {
+        return getSubstrateTracks(kinase)
+      })
+      const tracks = await Promise.all(trackPromises)
+      store.commit('SET_SUBSTRATE_TRACKS', { tracks })
+    },
     updateSelectedData(store, selectedData) {
       store.commit('UPDATE_DISPLAY_DATA', selectedData)
     },
     updateTumorsLocked(store, tumorsLocked) {
       store.commit('UPDATE_TUMORS_LOCKED', tumorsLocked)
     },
+    setView(store, v) {
+      store.commit('SET_VIEW', v)
+    }
   }
 })

@@ -1,19 +1,20 @@
 <template>
-    <div class="heatmap-container">
-        <div id="plotly-heatmap" >
+    <div class="heatmap-container-substrate">
+        test
+        <div id="plotly-heatmap-substrate" >
         </div>
     </div>
 </template>
 
 <script>
-  import generateHeatmap from '../plotly/plotly'
+  import generateHeatmap from '../plotlySubstrate/plotly'
 
-  import categoricalColors from '../plotly/colors/categoricalColors'
+  import categoricalColors from '../plotlySubstrate/colors/categoricalColors'
 
   let plot
 
   export default {
-    name: "heatmap-container",
+    name: "heatmap-container-substrate",
     computed: {
       clinicalTracks() {
         return this.$store.state.clinicalTracks
@@ -22,16 +23,19 @@
         return this.$store.state.samples
       },
       top() {
-        return this.$store.state.Top
+        return this.$store.state.Top.filter(e => e && e.kinase === this.view)
       },
       bottom() {
-        return this.$store.state.Bottom
+        return this.$store.state.Bottom.filter(e => e && e.kinase === this.view)
       },
       foldchange() {
-        return this.$store.state.Foldchange
+        return this.$store.state.Foldchange.filter(e => e && e.kinase === this.view)
+      },
+      view() {
+        return this.$store.state.view
       },
       substrateTracks() {
-        return this.$store.state.substrateTracks
+        return this.$store.state.substrateTracks.filter(e => e && e.kinase === this.view)
       },
     },
     watch: {
@@ -56,14 +60,15 @@
     },
     methods: {
       renderHeatmap() {
-        plot = generateHeatmap(
-          this.clinicalTracks,
-          this.samples.slice(),
-          this.top.slice(),
-          this.bottom.slice(),
-          this.foldchange.slice(),
-        )
-
+        if (this.substrateTracks.length > 0) {          
+          plot = generateHeatmap({ 
+            samples: this.samples, 
+            substrateTracks: this.substrateTracks, 
+            clinicalTracks: this.clinicalTracks ,
+            top: this.top,
+            bottom: this.bottom,
+            foldchange: this.foldchange,
+        })
         plot.on('plotly_click', (data) => {
             const selectedSeries = data.points[0].y;
             const selectedSample = data.points[0].x;
@@ -75,6 +80,8 @@
                 { selectedSeries, selectedSample, selectedValue }
             )
         });
+      }
+
 
 
       }
@@ -86,7 +93,7 @@
 </script>
 
 <style scoped>
-    .heatmap-container {
+    .heatmap-container-substrate {
         width: 100%;
         min-width: 1200px;
     }
