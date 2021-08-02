@@ -6,3 +6,10 @@ data/
 .DS_Store
 server.zip
 yarn.lock
+
+../._.DS_Store
+../data.zip
+._.DS_Store
+src.zip
+
+*.zip
