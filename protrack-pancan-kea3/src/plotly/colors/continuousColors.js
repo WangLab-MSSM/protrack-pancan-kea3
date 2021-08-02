@@ -6,7 +6,7 @@ export default {
       ],
       colorbar: {
         title: '<b>Overall<br>survival<br>(days)</b>',
-          x: 1.27,
+          x: 1.24,
           thickness: 10,
           len: 0.5,
           y: 0.7

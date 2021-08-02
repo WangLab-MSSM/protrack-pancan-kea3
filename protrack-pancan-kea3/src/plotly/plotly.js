@@ -17,6 +17,8 @@ export default function generateHeatmap(clinicalTracks, samples, top, bottom, fo
   bottomTracks.y.splice(0,0,'---')
 
   const foldChangeTracks = generateTrackGroup(foldchange, samples, true)
+  foldChangeTracks.z.splice(0,0,[])
+  foldChangeTracks.y.splice(0,0,'----')
 
   let data = []
   data.push(foldChangeTracks)

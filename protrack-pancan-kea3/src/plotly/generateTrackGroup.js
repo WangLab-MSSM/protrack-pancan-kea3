@@ -61,7 +61,7 @@ export function generateTrackGroup(tracks, samples, fc=false) {
     ]
     colorbar = {
         title: '<b>fc</b>',
-        x: 1.1,
+        x: 1.12,
         thickness: 10,
         len: 0.5,
         y: 0.7
@@ -77,7 +77,7 @@ export function generateTrackGroup(tracks, samples, fc=false) {
       [1.0, '#FFFF00']
     ]
     colorbar = {
-        title: '<b>-zscore</b>',
+        title: '<b>normalized<br>KEA3 mean rank<br>scores times -1</b>',
         x: 1.02,
         thickness: 10,
         side: 'bottom',
